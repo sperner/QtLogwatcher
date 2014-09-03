@@ -136,7 +136,7 @@
         <item>
          <widget class="QLineEdit" name="linPort">
           <property name="text">
-           <string>15000</string>
+           <string>26</string>
           </property>
          </widget>
         </item>
