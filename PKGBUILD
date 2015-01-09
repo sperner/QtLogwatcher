@@ -1,15 +1,22 @@
-# Contributor: Jonathan Wiersma <archaur at jonw dot org>
+# Contributor: Sven Sperner <cethss@gmail.com>
+#
+# for arch build system, run with 'makepkg'
+#
+
 pkgname=QtLogwatcher
-pkgver=master
+pkgver=0.1
 pkgrel=1
 pkgdesc="Graphical logwatcher client using the qt framework"
+
 arch=('i686' 'x86_64')
 url="https://github.com/sperner/QtLogwatcher"
+source=("git+https://github.com/sperner/QtLogwatcher")
 license=('GPL3')
+
 depends=('qt4>=4.0')
 makedepends=('gcc>=3' 'cmake' 'git')
 optdepends=()
-source=("git+https://github.com/sperner/QtLogwatcher")
+
 md5sums=('SKIP')
 
 build()
@@ -21,6 +28,17 @@ build()
 
 package()
 {
-        cd "$srcdir/$pkgname"
-        make DESTDIR="$pkgdir" install || return 1
+	cd "$srcdir/$pkgname"
+
+	mkdir -p "$pkgdir"/usr/bin || return 1
+	cp QtLogwatcher "$pkgdir"/usr/bin/qtlogwatcher || return 1
+
+	mkdir -p "$pkgdir"/usr/share/icons  || return 1
+	cp qtlogwatcher*.png "$pkgdir"/usr/share/icons/ || return 1
+
+	mkdir -p "$pkgdir"/usr/share/applications || return 1
+	cp qtlogwatcher.desktop "$pkgdir"/usr/share/applications/ || return 1
+
+	mkdir -p "$pkgdir"/etc || return 1
+	cp qtlogwatcher.conf "$pkgdir"/etc/ || return 1
 }
