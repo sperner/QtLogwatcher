@@ -19,6 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTLOGWATCHER_H
 #define QTLOGWATCHER_H
 
+#define ICON_ACTIVE "/usr/local/share/icons/qtlogwatcher_active.png"
+#define ICON_INACTIVE "/usr/local/share/icons/qtlogwatcher_inactive.png"
+
 #include <QAction>
 #include <QDebug>
 #include <QFileDialog>

@@ -138,7 +138,7 @@ void qtlogwatcher::createTrayIcon( )
 
     systrayIcon = new QSystemTrayIcon( this );
     systrayIcon->setContextMenu( systrayMenu );
-    systrayIcon->setIcon( QIcon("qtlogwatcher_active.png") );
+    systrayIcon->setIcon( QIcon(ICON_ACTIVE) );
     systrayIcon->show( );
     connect( systrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)) , this, SLOT(toggleVisibility()) );
 }
@@ -159,12 +159,12 @@ void qtlogwatcher::toggleVisibility( )
     if( this->isVisible() )
     {
         this->hide( );
-        systrayIcon->setIcon( QIcon("qtlogwatcher_inactive.png") );
+        systrayIcon->setIcon( QIcon(ICON_INACTIVE) );
     }
     else
     {
         this->show( );
-        systrayIcon->setIcon( QIcon("qtlogwatcher_active.png") );
+        systrayIcon->setIcon( QIcon(ICON_ACTIVE) );
     }
 }
 
