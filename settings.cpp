@@ -34,7 +34,7 @@ settings::settings( )
     twHosts->setColumnCount( 2 );
     twHosts->setHorizontalHeaderItem( 0, new QTableWidgetItem("Host", QTableWidgetItem::Type) );
     twHosts->setHorizontalHeaderItem( 1, new QTableWidgetItem("Port", QTableWidgetItem::Type) );
-    twHosts->horizontalHeader()->setResizeMode( QHeaderView::Interactive );
+    twHosts->horizontalHeader()->setSectionResizeMode( QHeaderView::Interactive );
 
     configuration = new QSettings( SETTINGS_FILE, QSettings::NativeFormat );
     load( );
