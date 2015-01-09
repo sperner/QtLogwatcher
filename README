@@ -16,10 +16,18 @@ Checkout:
 git clone https://github.com/sperner/QtLogwatcher
 
 
-Compile:
+Compile (standard way):
 
+qmake
 make
 make install
+
+
+Compile (arch build system):
+
+cp PKGBUILD $anywhere
+cd $anywhere
+makepkg
 
 
 Qt-Creator:
