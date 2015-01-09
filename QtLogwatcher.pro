@@ -30,13 +30,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         qtlogwatcher.cpp \
-    settings.cpp \
-    setserver.cpp
+    settings.cpp
 
 HEADERS  += qtlogwatcher.h \
-    settings.h \
-    setserver.h
+    settings.h
 
 FORMS    += qtlogwatcher.ui \
-    settings.ui \
-    setserver.ui
+    settings.ui

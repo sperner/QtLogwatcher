@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "setserver.h"
 #include "settings.h"
 #include "ui_settings.h"
 
@@ -27,9 +26,6 @@ settings::settings( )
 
     connect( buttonBox, SIGNAL(accepted()), this, SLOT(save()) );
     connect( buttonBox, SIGNAL(rejected()), this, SLOT(close()) );
-    connect( btnAdd, SIGNAL(clicked()), this, SLOT(add()) );
-    connect( btnEdit, SIGNAL(clicked()), this, SLOT(edit()) );
-    connect( btnRemove, SIGNAL(clicked()), this, SLOT(remove()) );
 
     twHosts->setColumnCount( 2 );
     twHosts->setHorizontalHeaderItem( 0, new QTableWidgetItem("Host", QTableWidgetItem::Type) );
@@ -106,47 +102,6 @@ void settings::close( )
     qDebug() << "closed Settings" << endl;
 }
 
-
-void settings::add( )
-{
-    setserver *srvBox = new setserver( this );
-
-    if(srvBox->exec() == QDialog::Accepted)
-    {
-        insert( srvBox->getAddress(), srvBox->getPort() );
-    }
-}
-
-void settings::edit( )
-{
-    if( twHosts->currentRow() >= 0 )
-    {
-        setserver *srvBox = new setserver( this, twHosts->item(twHosts->currentRow(), 0)->text(),
-                                                 twHosts->item(twHosts->currentRow(), 1)->text().toInt() );
-        if(srvBox->exec() == QDialog::Accepted)
-        {
-            update( srvBox->getAddress(), srvBox->getPort() );
-        }
-    }
-    else
-    {
-        QMessageBox::question( this, "No row selected", "Please select a row to edit first", QMessageBox::Ok );
-    }
-}
-
-void settings::remove( )
-{
-    if( twHosts->currentRow() >= 0 )
-    {
-        twHosts->removeRow( twHosts->currentRow() );
-    }
-    else
-    {
-        QMessageBox::question( this, "No row selected", "Please select a row to remove first", QMessageBox::Ok );
-    }
-}
-
-
 void settings::insert( QString address, qint16 port )
 {
     QTableWidgetItem *item;
@@ -165,3 +120,5 @@ void settings::update( QString address, qint16 port )
     item = new QTableWidgetItem( QString::number(port), 0 );
     twHosts->setItem( twHosts->currentRow(), 1, item );
 }
+
+

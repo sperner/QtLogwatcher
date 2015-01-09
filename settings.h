@@ -53,10 +53,6 @@ private slots:
     void save();
     void close();
 
-    void add();
-    void edit();
-    void remove();
-
 };
 
 
