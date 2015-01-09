@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=QtLogwatcher
+Exec=qtlogwatcher
+Terminal=false
+Type=Application
+Categories=Qt;System
+Icon=qtlogwatcher_active.png
