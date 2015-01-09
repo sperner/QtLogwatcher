@@ -30,14 +30,14 @@ package()
 {
 	cd "$srcdir/$pkgname"
 
-	mkdir -p "$pkgdir"/usr/bin || return 1
-	cp QtLogwatcher "$pkgdir"/usr/bin/qtlogwatcher || return 1
+	mkdir -p "$pkgdir"/usr/local/bin || return 1
+	cp QtLogwatcher "$pkgdir"/usr/local/bin/qtlogwatcher || return 1
 
-	mkdir -p "$pkgdir"/usr/share/icons  || return 1
-	cp qtlogwatcher*.png "$pkgdir"/usr/share/icons/ || return 1
+	mkdir -p "$pkgdir"/usr/local/share/icons  || return 1
+	cp qtlogwatcher*.png "$pkgdir"/usr/local/share/icons/ || return 1
 
-	mkdir -p "$pkgdir"/usr/share/applications || return 1
-	cp qtlogwatcher.desktop "$pkgdir"/usr/share/applications/ || return 1
+	mkdir -p "$pkgdir"/usr/local/share/applications || return 1
+	cp qtlogwatcher.desktop "$pkgdir"/usr/local/share/applications/ || return 1
 
 	mkdir -p "$pkgdir"/etc || return 1
 	cp qtlogwatcher.conf "$pkgdir"/etc/ || return 1
