@@ -6,3 +6,4 @@ Terminal=false
 Type=Application
 Categories=Qt;System
 Icon=qtlogwatcher_active.png
+StartupNotify=true
