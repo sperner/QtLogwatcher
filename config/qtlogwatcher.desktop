@@ -1,9 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=QtLogwatcher
-Exec=qtlogwatcher
+Exec=QtLogwatcher
 Terminal=false
 Type=Application
-Categories=Qt;System
-Icon=qtlogwatcher_active.png
+Categories=Qt;System;
+Icon=qtlogwatcher_active
 StartupNotify=true
