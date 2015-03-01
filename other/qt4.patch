@@ -1,0 +1,13 @@
+Gemeinsame Unterverzeichnisse: qtlogwatcher/.git und qtlogwatcher-qt4/.git.
+diff -u qtlogwatcher/settings.cpp qtlogwatcher-qt4/settings.cpp
+--- qtlogwatcher/settings.cpp	2015-03-01 11:31:25.218439550 +0100
++++ qtlogwatcher-qt4/settings.cpp	2015-03-01 11:32:12.471773029 +0100
+@@ -30,7 +30,7 @@
+     twHosts->setColumnCount( 2 );
+     twHosts->setHorizontalHeaderItem( 0, new QTableWidgetItem("Host", QTableWidgetItem::Type) );
+     twHosts->setHorizontalHeaderItem( 1, new QTableWidgetItem("Port", QTableWidgetItem::Type) );
+-    twHosts->horizontalHeader()->setSectionResizeMode( QHeaderView::Interactive );
++    twHosts->horizontalHeader()->setResizeMode( QHeaderView::Interactive );
+ 
+     configuration = new QSettings( SETTINGS_FILE, QSettings::NativeFormat );
+     load( );
