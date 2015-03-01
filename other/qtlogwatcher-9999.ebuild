@@ -35,4 +35,14 @@ src_compile() {
 
 src_install() {
 	dobin QtLogwatcher
+
+        insinto /etc
+        doins config/qtlogwatcher.conf
+	domenu config/qtlogwatcher.desktop
+
+	doicon artwork/qtlogwatcher_active.png
+	doicon artwork/qtlogwatcher_inactive.png
+
+#	dodoc docs/{authors,changelog,install,license,news,readme}
+	dodoc docs/{license,readme}
 }
