@@ -281,11 +281,22 @@ void qtlogwatcher::doClientReceive( )
 
             if( settingsDialog->chkNotifier->isChecked() && settingsDialog->cmbNotifier->currentIndex() >= type.toInt() )
             {
-                systrayIcon->showMessage( host + " - " + file, message );
-                /*
-                 TODO: System-Notifier (KNotify) or Tray-Icon-Notification (systrayIcon)
-                */
+                if( type.toInt() < 4 )
+                {
+                    systrayIcon->showMessage( host + " - " + file, message, QSystemTrayIcon::Critical , settingsDialog->spinTime->value() * 1000 );
+                }
+                else if( type.toInt() == 4 )
+                {
+                    systrayIcon->showMessage( host + " - " + file, message, QSystemTrayIcon::Warning , settingsDialog->spinTime->value() * 1000 );
+                }
+                else if( type.toInt() > 4 )
+                {
+                    systrayIcon->showMessage( host + " - " + file, message, QSystemTrayIcon::Information , settingsDialog->spinTime->value() * 1000 );
+                }
             }
+            /*
+             TODO: System-Notifier (KNotify) or Tray-Icon-Notification (systrayIcon)
+            */
         }
     }
 

@@ -52,8 +52,9 @@ void settings::load( )
     cmbNotifier->setCurrentIndex( cmbNotifier->findText(configuration->value("Notifier").toString(),Qt::MatchCaseSensitive) );
     chkNotifier->setChecked( configuration->value("Enabled").toBool() );
     chkScroll->setChecked( configuration->value("AutoScroll").toBool() );
-    radioTray->setChecked( configuration->value("Tray").toBool() );
-    radioSystem->setChecked( configuration->value("System").toBool() );
+    radTray->setChecked( configuration->value("Tray").toBool() );
+    radSystem->setChecked( configuration->value("System").toBool() );
+    spinTime->setValue( configuration->value("Time").toInt() );
     configuration->endGroup( );
 
     configuration->beginGroup( "Hosts" );
@@ -81,8 +82,9 @@ void settings::save( )
     configuration->setValue( "Notifier", cmbNotifier->currentText() );
     configuration->setValue( "Enabled", chkNotifier->isChecked() );
     configuration->setValue( "AutoScroll", chkScroll->isChecked() );
-    configuration->setValue( "Tray", radioTray->isChecked() );
-    configuration->setValue( "System", radioSystem->isChecked() );
+    configuration->setValue( "Tray", radTray->isChecked() );
+    configuration->setValue( "System", radSystem->isChecked() );
+    configuration->setValue( "Time", spinTime->value() );
     configuration->endGroup( );
 
     configuration->beginGroup( "Hosts" );
