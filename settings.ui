@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>400</height>
+    <width>424</width>
+    <height>415</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="vert_Main">
      <item>
-      <widget class="QFrame" name="frame">
+      <widget class="QFrame" name="ver_Hosts">
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
        </property>
@@ -50,302 +50,430 @@
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="vert_Notifiyng">
+      <layout class="QVBoxLayout" name="vert_Settings">
+       <property name="topMargin">
+        <number>10</number>
+       </property>
+       <property name="bottomMargin">
+        <number>10</number>
+       </property>
        <item>
-        <layout class="QHBoxLayout" name="hori_AutoScroll">
+        <layout class="QVBoxLayout" name="vert_Logger">
+         <property name="margin">
+          <number>10</number>
+         </property>
          <item>
-          <widget class="QCheckBox" name="chkScroll">
-           <property name="text">
-            <string>AutoScroll</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="hori_AutoScroll">
+           <item>
+            <widget class="QCheckBox" name="chkScroll">
+             <property name="text">
+              <string>AutoScroll</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="hSpcChkS">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </item>
          <item>
-          <spacer name="horizontalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
+          <layout class="QHBoxLayout" name="hori_LogLevel">
+           <item>
+            <widget class="QLabel" name="lblLogLevel">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>LogLevel</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="hSpcLblL">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>30</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cmbLogLevel">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="currentIndex">
+              <number>6</number>
+             </property>
+             <item>
+              <property name="text">
+               <string>Emergence</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Alert</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Critical</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Error</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Warning</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Notice</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Information</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Debug</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>DebugEx</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item>
+            <spacer name="hSpcCmbL">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="hori_LogLevel">
+        <layout class="QVBoxLayout" name="vert_Notifier" stretch="0,0,0">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinimumSize</enum>
+         </property>
+         <property name="margin">
+          <number>10</number>
+         </property>
          <item>
-          <widget class="QLabel" name="lblLogLevel">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>LogLevel</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="hori_Notifier">
+           <item>
+            <widget class="QLabel" name="lblNotifier">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Notifier</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="hSpcLblN">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>30</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cmbNotifier">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="currentIndex">
+              <number>6</number>
+             </property>
+             <item>
+              <property name="text">
+               <string>Emergence</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Alert</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Critical</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Error</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Warning</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Notice</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Information</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Debug</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>DebugEx</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item>
+            <spacer name="hSpcCmbN">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </item>
          <item>
-          <spacer name="hSpc1">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>30</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
+          <layout class="QHBoxLayout" name="hori_NotifierChecks">
+           <item>
+            <widget class="QCheckBox" name="chkNotifier">
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Enabled</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="hSpcChkN">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>30</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="radTray">
+             <property name="text">
+              <string>Tray</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="radSystem">
+             <property name="text">
+              <string>System</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="hSpcRadN">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QComboBox" name="cmbLogLevel">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+          <layout class="QHBoxLayout" name="hori_NotifierTime">
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
            </property>
            <item>
-            <property name="text">
-             <string>Emergence</string>
-            </property>
+            <widget class="QLabel" name="lblTime">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Time (s)</string>
+             </property>
+            </widget>
            </item>
            <item>
-            <property name="text">
-             <string>Alert</string>
-            </property>
+            <spacer name="hSpcLblT">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>30</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item>
-            <property name="text">
-             <string>Critical</string>
-            </property>
+            <widget class="QSpinBox" name="spinTime"/>
            </item>
            <item>
-            <property name="text">
-             <string>Error</string>
-            </property>
+            <spacer name="hSpcSpnT">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>30</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item>
-            <property name="text">
-             <string>Warning</string>
-            </property>
+            <widget class="QLabel" name="lbl">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>80</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
            </item>
            <item>
-            <property name="text">
-             <string>Notice</string>
-            </property>
+            <widget class="QSpinBox" name="spin"/>
            </item>
            <item>
-            <property name="text">
-             <string>Information</string>
-            </property>
+            <spacer name="hSpcSpn">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
-           <item>
-            <property name="text">
-             <string>Debug</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>DebugEx</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="hori_Notifier">
-         <item>
-          <widget class="QLabel" name="lblNotifier">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Notifier</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="hSpc2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>30</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QComboBox" name="cmbNotifier">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <item>
-            <property name="text">
-             <string>Emergence</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Alert</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Critical</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Error</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Warning</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Notice</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Information</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Debug</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>DebugEx</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="hori_NotifierChecks">
-         <item>
-          <widget class="QCheckBox" name="chkNotifier">
-           <property name="minimumSize">
-            <size>
-             <width>80</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Enabled</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="hSpc3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>30</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioTray">
-           <property name="text">
-            <string>Tray</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioSystem">
-           <property name="text">
-            <string>System</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
+          </layout>
          </item>
         </layout>
        </item>
