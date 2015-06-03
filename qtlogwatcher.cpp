@@ -37,6 +37,9 @@ qtlogwatcher::qtlogwatcher(QWidget *parent) : QMainWindow(parent), ui(new Ui::qt
     createStatusBar( );
     createTrayIcon( );
     initTableWidget( );
+
+    //TODO: if start-hidden
+    //toggleVisibility();
 }
 
 qtlogwatcher::~qtlogwatcher( )
@@ -93,33 +96,8 @@ void qtlogwatcher::createMenuBar( )
     menuBar->addMenu( mainMenu );
 }
 
-void qtlogwatcher::createSocket( )
+void qtlogwatcher::createSockets( )
 {
-    /*
-        TODO: Multiple Hosts
-    */
-
-    if( ui->linProto->text().compare( "tcp" ) == 0 )
-    {
-        tcpSocket = new QTcpSocket( this );
-        connect( tcpSocket, SIGNAL(connected()), this, SLOT(isConnected()) );
-        connect( tcpSocket, SIGNAL(disconnected()), this, SLOT(isDisconnected()) );
-        connect( tcpSocket, SIGNAL(readyRead()), this, SLOT(doClientReceive()) );
-    }
-    else if( ui->linProto->text().compare( "udp" ) == 0 )
-    {
-        udpSocket = new QUdpSocket( this );
-        connect( udpSocket, SIGNAL(connected()), this, SLOT(isConnected()) );
-        connect( udpSocket, SIGNAL(disconnected()), this, SLOT(isDisconnected()) );
-        connect( udpSocket, SIGNAL(readyRead()), this, SLOT(doClientReceive()) );
-    }
-    else if( ui->linProto->text().compare( "ssl" ) == 0 )
-    {
-        sslSocket = new QSslSocket( this );
-        connect( sslSocket, SIGNAL(connected()), this, SLOT(isConnected()) );
-        connect( sslSocket, SIGNAL(disconnected()), this, SLOT(isDisconnected()) );
-        connect( sslSocket, SIGNAL(readyRead()), this, SLOT(doClientReceive()) );
-    }
 }
 
 void qtlogwatcher::createStatusBar( )
@@ -184,61 +162,88 @@ void qtlogwatcher::remove( )
 
 void qtlogwatcher::connectToServer( )
 {
-    /*
-        TODO: Multiple Hosts
-    */
-    createSocket( );
-
-    if( ui->linProto->text().compare( "tcp" ) == 0 )
+    int i;
+    for( i = 0; i < settingsDialog->getTwHosts()->rowCount(); i++ )
     {
-        tcpSocket->connectToHost( ui->linAddress->text(), ui->linPort->text().toInt() );
-    }
-    else if( ui->linProto->text().compare( "udp" ) == 0 )
-    {
-        udpSocket->connectToHost( ui->linAddress->text(), ui->linPort->text().toInt() );
-    }
-    else if( ui->linProto->text().compare( "ssl" ) == 0 )
-    {
-        sslSocket->connectToHost( ui->linAddress->text(), ui->linPort->text().toInt() );
-//        sslSocket->connectToHostEncrypted();
-    }
-    else
-    {
-        QMessageBox::question( this, "Protocol not valid", "Please select one of tcp|udp|ssl", QMessageBox::Ok );
+        if( settingsDialog->getTwHosts()->item( i, 3 )->text().toInt() == 1 )
+        {
+            if( settingsDialog->getTwHosts()->item( i, 2 )->text().compare( "tcp" ) == 0 )
+            {
+                QTcpSocket* tcpSocket = new QTcpSocket();
+                socketList.append( tcpSocket );
+                connect( tcpSocket, SIGNAL(connected()), this, SLOT(isConnected()) );
+                connect( tcpSocket, SIGNAL(disconnected()), this, SLOT(isDisconnected()) );
+                connect( tcpSocket, SIGNAL(readyRead()), this, SLOT(doClientReceive()) );
+                tcpSocket->connectToHost( settingsDialog->getTwHosts()->item( i, 0 )->text(),
+                                          settingsDialog->getTwHosts()->item( i, 1 )->text().toInt() );
+            }
+            else if( settingsDialog->getTwHosts()->item( i, 2 )->text().compare( "udp" ) == 0 )
+            {
+                QUdpSocket* udpSocket = new QUdpSocket();
+                socketList.append( udpSocket );
+                connect( udpSocket, SIGNAL(connected()), this, SLOT(isConnected()) );
+                connect( udpSocket, SIGNAL(disconnected()), this, SLOT(isDisconnected()) );
+                connect( udpSocket, SIGNAL(readyRead()), this, SLOT(doClientReceive()) );
+                udpSocket->connectToHost( settingsDialog->getTwHosts()->item( i, 0 )->text(),
+                                          settingsDialog->getTwHosts()->item( i, 1 )->text().toInt() );
+            }
+            else if( settingsDialog->getTwHosts()->item( i, 2 )->text().compare( "ssl" ) == 0 )
+            {
+                QSslSocket* sslSocket = new QSslSocket();
+                socketList.append( sslSocket );
+                connect( sslSocket, SIGNAL(connected()), this, SLOT(isConnected()) );
+                connect( sslSocket, SIGNAL(disconnected()), this, SLOT(isDisconnected()) );
+                connect( sslSocket, SIGNAL(readyRead()), this, SLOT(doClientReceive()) );
+                sslSocket->connectToHostEncrypted( settingsDialog->getTwHosts()->item( i, 0 )->text(),
+                                          settingsDialog->getTwHosts()->item( i, 1 )->text().toInt() );
+            }
+        }
     }
 }
 
 void qtlogwatcher::disconnectFromServer( )
 {
-    if( ui->linProto->text().compare( "tcp" ) == 0 )
+    for( int i = socketList.size()-1; i >= 0 ; i-- )
     {
-        tcpSocket->disconnectFromHost( );
+        socketList.takeAt(i)->disconnectFromHost();
     }
-/*
-    TODO: implement more protocols
-
-    else if( ui->linProto->text().compare( "udp" ) == 0 )
-    {
-        udpSocket->disconnectFromHost( );
-    }
-    else if( ui->linProto->text().compare( "ssl" ) == 0 )
-    {
-        sslSocket->disconnectFromHost( );
-    }
-*/
 }
 
 
 void qtlogwatcher::isConnected( )
 {
+    QString message = "";
     statusBar->setStyleSheet( "QLabel { color : green; }" );
-    statusBar->showMessage( "CONNECTED" );
+    for( int i = 0; i < socketList.size(); i++ )
+    {
+        if( socketList.at(i)->isValid() )
+        {
+            message += socketList.at(i)->peerName() + ":up; ";
+        }
+        else
+        {
+            message += socketList.at(i)->peerName() + ":down; ";
+        }
+    }
+    statusBar->showMessage( message );
 }
 
 void qtlogwatcher::isDisconnected( )
 {
+    QString message = "";
     statusBar->setStyleSheet( "QLabel { color : red; }" );
-    statusBar->showMessage( "DISCONNECTED" );
+    for( int i = 0; i < socketList.size(); i++ )
+    {
+        if( socketList.at(i)->isValid() )
+        {
+            message += socketList.at(i)->peerName() + ":up; ";
+        }
+        else
+        {
+            message += socketList.at(i)->peerName() + ":down; ";
+        }
+    }
+    statusBar->showMessage( message );
 }
 
 
@@ -247,69 +252,81 @@ void qtlogwatcher::doClientReceive( )
     QString type, host, file, message;
     QTableWidgetItem *item;
 
-    QString stream( tcpSocket->readAll( ) );
-    QStringList streamList = stream.split("|!|");
-
-    for( int i = 0; i < streamList.size(); i++ )
+    for( int i = 0; i < socketList.size(); i++ )
     {
-        QStringList packetList = streamList[i].split("|:|");
+        QString stream( socketList.at(i)->readAll( ) );
+        QStringList streamList = stream.split("|!|");
 
-        for( int i = 0; i < packetList.size()-2; i = i + 3 )
+        for( int i = 0; i < streamList.size(); i++ )
         {
-            type = packetList.at( i );
-            host = tcpSocket->peerAddress().toString() + ":" + QString::number( tcpSocket->peerPort() );
-            file = packetList.at( i+1 );
-            message = packetList.at( i+2 );
+            QStringList packetList = streamList[i].split("|:|");
 
-            if( settingsDialog->cmbLogLevel->currentIndex() >= type.toInt() )
+            for( int i = 0; i < packetList.size()-2; i = i + 3 )
             {
-                ui->twMessages->setRowCount( ui->twMessages->rowCount() + 1 );
-                item = new QTableWidgetItem( type, 0 );
-                ui->twMessages->setItem( ui->twMessages->rowCount()-1, 0, item );
-                item = new QTableWidgetItem( host, 0 );
-                ui->twMessages->setItem( ui->twMessages->rowCount()-1, 1, item );
-                item = new QTableWidgetItem( file, 0 );
-                ui->twMessages->setItem( ui->twMessages->rowCount()-1, 2, item );
-                item = new QTableWidgetItem( message, 0 );
-                ui->twMessages->setItem( ui->twMessages->rowCount()-1, 3, item );
+                type = packetList.at( i );
+                host = socketList.at(i)->peerAddress().toString() + ":"
+                     + QString::number( socketList.at(i)->peerPort() );
+                file = packetList.at( i+1 );
+                message = packetList.at( i+2 );
 
-                if( settingsDialog->chkScroll->isChecked() )
+                if( settingsDialog->cmbLogLevel->currentIndex() >= type.toInt() )
                 {
-                    ui->twMessages->scrollToBottom( );
-                }
-            }
+                    ui->twMessages->setRowCount( ui->twMessages->rowCount() + 1 );
+                    item = new QTableWidgetItem( type, 0 );
+                    ui->twMessages->setItem( ui->twMessages->rowCount()-1, 0, item );
+                    item = new QTableWidgetItem( host, 0 );
+                    ui->twMessages->setItem( ui->twMessages->rowCount()-1, 1, item );
+                    item = new QTableWidgetItem( file, 0 );
+                    ui->twMessages->setItem( ui->twMessages->rowCount()-1, 2, item );
+                    item = new QTableWidgetItem( message, 0 );
+                    ui->twMessages->setItem( ui->twMessages->rowCount()-1, 3, item );
 
-            if( settingsDialog->chkNotifier->isChecked() && settingsDialog->cmbNotifier->currentIndex() >= type.toInt() )
-            {
-                if( type.toInt() < 4 )
-                {
-                    systrayIcon->showMessage( host + " - " + file, message, QSystemTrayIcon::Critical , settingsDialog->spinTime->value() * 1000 );
+                    if( settingsDialog->chkScroll->isChecked() )
+                    {
+                        ui->twMessages->scrollToBottom( );
+                    }
                 }
-                else if( type.toInt() == 4 )
+
+                if( settingsDialog->chkNotifier->isChecked() && settingsDialog->cmbNotifier->currentIndex() >= type.toInt() )
                 {
-                    systrayIcon->showMessage( host + " - " + file, message, QSystemTrayIcon::Warning , settingsDialog->spinTime->value() * 1000 );
+                    if( i > 0 )
+                    {
+                        //TODO: Qt5
+                        //QThread::sleep( settingsDialog->spinTime->value() );
+                        Sleeper::sleep( settingsDialog->spinTime->value() );
+                    }
+                    if( type.toInt() < 4 )
+                    {
+                        systrayIcon->showMessage( host + " - " + file, message, QSystemTrayIcon::Critical , settingsDialog->spinTime->value() * 1000 );
+                    }
+                    else if( type.toInt() == 4 )
+                    {
+                        systrayIcon->showMessage( host + " - " + file, message, QSystemTrayIcon::Warning , settingsDialog->spinTime->value() * 1000 );
+                    }
+                    else if( type.toInt() > 4 )
+                    {
+                        systrayIcon->showMessage( host + " - " + file, message, QSystemTrayIcon::Information , settingsDialog->spinTime->value() * 1000 );
+                    }
                 }
-                else if( type.toInt() > 4 )
-                {
-                    systrayIcon->showMessage( host + " - " + file, message, QSystemTrayIcon::Information , settingsDialog->spinTime->value() * 1000 );
-                }
+                /*
+                 TODO: System-Notifier (KNotify) or Tray-Icon-Notification (systrayIcon)
+                */
             }
-            /*
-             TODO: System-Notifier (KNotify) or Tray-Icon-Notification (systrayIcon)
-            */
         }
+
+        ui->txtInput->appendPlainText( stream );
     }
-
-    ui->txtInput->appendPlainText( stream );
-
 }
 
 void qtlogwatcher::doClientSend( )
 {
-    if( tcpSocket->isWritable() )
-    {
-        tcpSocket->write( ui->txtOutput->toPlainText().toUtf8().constData(), ui->txtOutput->toPlainText().toUtf8().length() );
-    }
+    /*
+        TODO: Multiple Hosts
+    */
+//    if( tcpSocket->isWritable() )
+//    {
+//        tcpSocket->write( ui->txtOutput->toPlainText().toUtf8().constData(), ui->txtOutput->toPlainText().toUtf8().length() );
+//    }
 }
 
 

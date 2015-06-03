@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QDebug>
 #include <QMessageBox>
 #include <QSettings>
+#include <QTableWidget>
 
 #include "ui_settings.h"
 
@@ -39,19 +40,21 @@ class settings : public QDialog, public Ui::settings
 public:
     settings();
     ~settings();
+    QTableWidget* getTwHosts();
 
 
 private:
     QSettings *configuration;
 
     void load();
-    void insert(QString address, qint16 port);
-    void update(QString address, qint16 port);
+    void insert(QString address, qint16 port, QString proto, qint16 status);
 
 
 private slots:
     void save();
     void close();
+    void addRow();
+    void delRow();
 
 };
 
