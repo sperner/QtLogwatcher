@@ -33,8 +33,8 @@ settings::settings( )
     twHosts->setHorizontalHeaderItem( 1, new QTableWidgetItem("Port", QTableWidgetItem::Type) );
     twHosts->setHorizontalHeaderItem( 2, new QTableWidgetItem("Proto", QTableWidgetItem::Type) );
     twHosts->setHorizontalHeaderItem( 3, new QTableWidgetItem("Active", QTableWidgetItem::Type) );
-//    twHosts->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeToContents );    //Qt5
-    twHosts->horizontalHeader()->setResizeMode( QHeaderView::ResizeToContents );
+    twHosts->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeToContents );    //Qt5
+//    twHosts->horizontalHeader()->setResizeMode( QHeaderView::ResizeToContents );
     twHosts->setColumnCount( 4 );
 
     configuration = new QSettings( SETTINGS_FILE, QSettings::NativeFormat );
