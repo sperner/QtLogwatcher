@@ -1,13 +1,42 @@
-Gemeinsame Unterverzeichnisse: qtlogwatcher/.git und qtlogwatcher-qt4/.git.
-diff -u qtlogwatcher/settings.cpp qtlogwatcher-qt4/settings.cpp
---- qtlogwatcher/settings.cpp	2015-03-01 11:31:25.218439550 +0100
-+++ qtlogwatcher-qt4/settings.cpp	2015-03-01 11:32:12.471773029 +0100
-@@ -30,7 +30,7 @@
-     twHosts->setColumnCount( 2 );
-     twHosts->setHorizontalHeaderItem( 0, new QTableWidgetItem("Host", QTableWidgetItem::Type) );
+diff -u QtLogwatcher/qtlogwatcher.cpp qtlogwatcher/qtlogwatcher.cpp
+--- QtLogwatcher/qtlogwatcher.cpp	2015-06-03 22:42:36.741971331 +0200
++++ qtlogwatcher/qtlogwatcher.cpp	2015-06-03 22:56:20.891950992 +0200
+@@ -291,7 +291,7 @@
+                 {
+                     if( i > 0 )
+                     {
+-                        QThread::sleep( settingsDialog->spinTime->value() );
++                        Sleeper::sleep( settingsDialog->spinTime->value() );
+                     }
+                     if( type.toInt() < 4 )
+                     {
+diff -u QtLogwatcher/qtlogwatcher.h qtlogwatcher/qtlogwatcher.h
+--- QtLogwatcher/qtlogwatcher.h	2015-06-03 22:42:02.701972171 +0200
++++ qtlogwatcher/qtlogwatcher.h	2015-06-03 22:39:21.551976148 +0200
+@@ -44,6 +44,14 @@
+     class qtlogwatcher;
+ }
+ 
++class Sleeper : public QThread
++{
++public:
++    static void usleep(unsigned long usecs){QThread::usleep(usecs);}
++    static void msleep(unsigned long msecs){QThread::msleep(msecs);}
++    static void sleep(unsigned long secs){QThread::sleep(secs);}
++};
++
+ class qtlogwatcher : public QMainWindow
+ {
+     Q_OBJECT
+diff -u QtLogwatcher/settings.cpp qtlogwatcher/settings.cpp
+--- QtLogwatcher/settings.cpp	2015-06-03 22:46:31.268632210 +0200
++++ qtlogwatcher/settings.cpp	2015-06-03 22:56:38.955283879 +0200
+@@ -33,7 +33,7 @@
      twHosts->setHorizontalHeaderItem( 1, new QTableWidgetItem("Port", QTableWidgetItem::Type) );
--    twHosts->horizontalHeader()->setSectionResizeMode( QHeaderView::Interactive );
-+    twHosts->horizontalHeader()->setResizeMode( QHeaderView::Interactive );
+     twHosts->setHorizontalHeaderItem( 2, new QTableWidgetItem("Proto", QTableWidgetItem::Type) );
+     twHosts->setHorizontalHeaderItem( 3, new QTableWidgetItem("Active", QTableWidgetItem::Type) );
+-    twHosts->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeToContents );
++    twHosts->horizontalHeader()->setResizeMode( QHeaderView::ResizeToContents );
+     twHosts->setColumnCount( 4 );
  
      configuration = new QSettings( SETTINGS_FILE, QSettings::NativeFormat );
-     load( );
