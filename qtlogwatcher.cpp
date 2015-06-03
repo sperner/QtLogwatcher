@@ -291,8 +291,6 @@ void qtlogwatcher::doClientReceive( )
                 {
                     if( i > 0 )
                     {
-                        //TODO: Qt5
-                        //QThread::sleep( settingsDialog->spinTime->value() );
                         Sleeper::sleep( settingsDialog->spinTime->value() );
                     }
                     if( type.toInt() < 4 )
