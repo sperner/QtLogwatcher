@@ -19,19 +19,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef QTLOGWATCHER_H
 #define QTLOGWATCHER_H
 
-#define ICON_ACTIVE "/usr/local/share/icons/qtlogwatcher_active.png"
-#define ICON_INACTIVE "/usr/local/share/icons/qtlogwatcher_inactive.png"
+#define ICON_ACTIVE "/usr/share/pixmaps/qtlogwatcher_active.png"
+#define ICON_INACTIVE "/usr/share/pixmaps/qtlogwatcher_inactive.png"
 
 #include <QAction>
 #include <QDebug>
 #include <QFileDialog>
 #include <QHostAddress>
+#include <QList>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMenuBar>
 #include <QStatusBar>
 #include <QSystemTrayIcon>
 #include <QTcpSocket>
+#include <QThread>
 #include <QUdpSocket>
 #include <QSslSocket>
 
@@ -41,6 +43,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace Ui {
     class qtlogwatcher;
 }
+
+class Sleeper : public QThread
+{
+public:
+    static void usleep(unsigned long usecs){QThread::usleep(usecs);}
+    static void msleep(unsigned long msecs){QThread::msleep(msecs);}
+    static void sleep(unsigned long secs){QThread::sleep(secs);}
+};
 
 class qtlogwatcher : public QMainWindow
 {
@@ -55,9 +65,8 @@ private:
     Ui::qtlogwatcher *ui;
     QStatusBar *statusBar;
     QSystemTrayIcon *systrayIcon;
-    QTcpSocket *tcpSocket;
-    QUdpSocket *udpSocket;
-    QSslSocket *sslSocket;
+
+    QList<QAbstractSocket*> socketList;
 
     QMenuBar *menuBar;
     QMenu *mainMenu;
@@ -77,7 +86,7 @@ private:
 
     void createActions();
     void createMenuBar();
-    void createSocket();
+    void createSockets();
     void createStatusBar();
     void createTrayIcon();
     void initTableWidget();

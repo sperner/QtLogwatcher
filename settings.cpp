@@ -24,13 +24,18 @@ settings::settings( )
 {
     setupUi( this );
 
+    connect( btnAdd, SIGNAL(clicked()), this, SLOT(addRow()) );
+    connect( btnDel, SIGNAL(clicked()), this, SLOT(delRow()) );
     connect( buttonBox, SIGNAL(accepted()), this, SLOT(save()) );
     connect( buttonBox, SIGNAL(rejected()), this, SLOT(close()) );
 
-    twHosts->setColumnCount( 2 );
     twHosts->setHorizontalHeaderItem( 0, new QTableWidgetItem("Host", QTableWidgetItem::Type) );
     twHosts->setHorizontalHeaderItem( 1, new QTableWidgetItem("Port", QTableWidgetItem::Type) );
-    twHosts->horizontalHeader()->setResizeMode( QHeaderView::Interactive );
+    twHosts->setHorizontalHeaderItem( 2, new QTableWidgetItem("Proto", QTableWidgetItem::Type) );
+    twHosts->setHorizontalHeaderItem( 3, new QTableWidgetItem("Active", QTableWidgetItem::Type) );
+//    twHosts->horizontalHeader()->setSectionResizeMode( QHeaderView::ResizeToContents );    //Qt5
+    twHosts->horizontalHeader()->setResizeMode( QHeaderView::ResizeToContents );
+    twHosts->setColumnCount( 4 );
 
     configuration = new QSettings( SETTINGS_FILE, QSettings::NativeFormat );
     load( );
@@ -39,6 +44,11 @@ settings::settings( )
 settings::~settings( )
 {
     delete this;
+}
+
+QTableWidget *settings::getTwHosts()
+{
+    return twHosts;
 }
 
 
@@ -65,7 +75,7 @@ void settings::load( )
         {
             hostport = configuration->value( key ).toString();
             hplist = hostport.split(":");
-            insert( hplist[0], hplist[1].toInt() );
+            insert( hplist[0], hplist[1].toInt(), hplist[2], hplist[3].toInt() );
         }
     }
     configuration->endGroup( );
@@ -91,7 +101,10 @@ void settings::save( )
     for( i = 0; i < twHosts->rowCount(); i++ )
     {
         host = "Host" + QString::number(i);
-        value = twHosts->item( i, 0 )->text() + ":" + twHosts->item( i, 1 )->text();
+        value = twHosts->item( i, 0 )->text()
+                + ":" + twHosts->item( i, 1 )->text()
+                + ":" + twHosts->item( i, 2 )->text()
+                + ":" + twHosts->item( i, 3 )->text();
         configuration->setValue( host, value );
     }
     configuration->endGroup( );
@@ -104,7 +117,18 @@ void settings::close( )
     qDebug() << "closed Settings" << endl;
 }
 
-void settings::insert( QString address, qint16 port )
+void settings::addRow( )
+{
+    twHosts->setRowCount( twHosts->rowCount()+1 );
+}
+
+void settings::delRow( )
+{
+    twHosts->removeRow( twHosts->currentRow() );
+}
+
+
+void settings::insert( QString address, qint16 port, QString proto, qint16 status )
 {
     QTableWidgetItem *item;
     twHosts->setRowCount( twHosts->rowCount()+1 );
@@ -112,15 +136,10 @@ void settings::insert( QString address, qint16 port )
     twHosts->setItem( twHosts->rowCount()-1, 0, item );
     item = new QTableWidgetItem( QString::number(port), 0 );
     twHosts->setItem( twHosts->rowCount()-1, 1, item );
-}
-
-void settings::update( QString address, qint16 port )
-{
-    QTableWidgetItem *item;
-    item = new QTableWidgetItem( address, 0 );
-    twHosts->setItem( twHosts->currentRow(), 0, item );
-    item = new QTableWidgetItem( QString::number(port), 0 );
-    twHosts->setItem( twHosts->currentRow(), 1, item );
+    item = new QTableWidgetItem( proto, 0 );
+    twHosts->setItem( twHosts->rowCount()-1, 2, item );
+    item = new QTableWidgetItem( QString::number(status), 0 );
+    twHosts->setItem( twHosts->rowCount()-1, 3, item );
 }
 
 
