@@ -34,11 +34,12 @@ package()
 	cp QtLogwatcher "$pkgdir"/usr/local/bin/qtlogwatcher || return 1
 
 	mkdir -p "$pkgdir"/usr/local/share/icons  || return 1
-	cp qtlogwatcher*.png "$pkgdir"/usr/local/share/icons/ || return 1
+	cp artwork/qtlogwatcher_active.png "$pkgdir"/usr/local/share/icons/ || return 1
+        cp artwork/qtlogwatcher_inactive.png "$pkgdir"/usr/local/share/icons/ || return 1
 
 	mkdir -p "$pkgdir"/usr/local/share/applications || return 1
-	cp qtlogwatcher.desktop "$pkgdir"/usr/local/share/applications/ || return 1
+	cp config/qtlogwatcher.desktop "$pkgdir"/usr/local/share/applications/ || return 1
 
 	mkdir -p "$pkgdir"/etc || return 1
-	cp qtlogwatcher.conf "$pkgdir"/etc/ || return 1
+	cp config/qtlogwatcher.conf "$pkgdir"/etc/ || return 1
 }
