@@ -144,12 +144,58 @@
            <item>
             <widget class="QCheckBox" name="chkScroll">
              <property name="text">
-              <string>AutoScroll</string>
+              <string>Auto scroll</string>
              </property>
             </widget>
            </item>
            <item>
             <spacer name="hSpcChkS">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="chkConnect">
+             <property name="text">
+              <string>Auto connect</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="hSpcChkC">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="chkHidden">
+             <property name="text">
+              <string>Start hidden</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="hSpcChkH">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -522,7 +568,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="lbl">
+            <widget class="QLabel" name="lblWait">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>80</horstretch>
@@ -530,12 +576,12 @@
               </sizepolicy>
              </property>
              <property name="text">
-              <string>TextLabel</string>
+              <string>Wait (s)</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QSpinBox" name="spin"/>
+            <widget class="QSpinBox" name="spinWait"/>
            </item>
            <item>
             <spacer name="hSpcSpn">

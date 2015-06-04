@@ -25,7 +25,6 @@ qtlogwatcher::qtlogwatcher(QWidget *parent) : QMainWindow(parent), ui(new Ui::qt
     ui->setupUi(this);
 
     connect( ui->btnClear, SIGNAL(clicked()), this, SLOT(clear()) );
-
     connect( ui->btnConnect, SIGNAL(clicked()), this, SLOT(connectToServer()) );
     connect( ui->btnDisconnect, SIGNAL(clicked()), this, SLOT(disconnectFromServer()) );
     connect( ui->btnSend, SIGNAL(clicked()), this, SLOT(doClientSend()) );
@@ -38,8 +37,15 @@ qtlogwatcher::qtlogwatcher(QWidget *parent) : QMainWindow(parent), ui(new Ui::qt
     createTrayIcon( );
     initTableWidget( );
 
-    //TODO: if start-hidden
-    //toggleVisibility();
+    if( settingsDialog->chkHidden->isChecked() )
+    {
+        toggleVisibility( );
+    }
+
+    if( settingsDialog->chkConnect->isChecked() )
+    {
+        connectToServer( );
+    }
 }
 
 qtlogwatcher::~qtlogwatcher( )
@@ -96,14 +102,12 @@ void qtlogwatcher::createMenuBar( )
     menuBar->addMenu( mainMenu );
 }
 
-void qtlogwatcher::createSockets( )
-{
-}
-
 void qtlogwatcher::createStatusBar( )
 {
+    statusLabel = new QLabel;
+    statusLabel->setText( "ready" );
     statusBar = QMainWindow::statusBar( );
-    statusBar->showMessage( tr("ready") );
+    statusBar->addPermanentWidget( statusLabel );
 }
 
 void qtlogwatcher::createTrayIcon( )
@@ -163,39 +167,39 @@ void qtlogwatcher::remove( )
 void qtlogwatcher::connectToServer( )
 {
     int i;
-    for( i = 0; i < settingsDialog->getTwHosts()->rowCount(); i++ )
+    for( i = 0; i < settingsDialog->twHosts->rowCount(); i++ )
     {
-        if( settingsDialog->getTwHosts()->item( i, 3 )->text().toInt() == 1 )
+        if( settingsDialog->twHosts->item( i, 3 )->text().toInt() == 1 )
         {
-            if( settingsDialog->getTwHosts()->item( i, 2 )->text().compare( "tcp" ) == 0 )
+            if( settingsDialog->twHosts->item( i, 2 )->text().compare( "tcp" ) == 0 )
             {
                 QTcpSocket* tcpSocket = new QTcpSocket();
                 socketList.append( tcpSocket );
-                connect( tcpSocket, SIGNAL(connected()), this, SLOT(isConnected()) );
-                connect( tcpSocket, SIGNAL(disconnected()), this, SLOT(isDisconnected()) );
+                connect( tcpSocket, SIGNAL(connected()), this, SLOT(updateState()) );
+                connect( tcpSocket, SIGNAL(disconnected()), this, SLOT(updateState()) );
                 connect( tcpSocket, SIGNAL(readyRead()), this, SLOT(doClientReceive()) );
-                tcpSocket->connectToHost( settingsDialog->getTwHosts()->item( i, 0 )->text(),
-                                          settingsDialog->getTwHosts()->item( i, 1 )->text().toInt() );
+                tcpSocket->connectToHost( settingsDialog->twHosts->item( i, 0 )->text(),
+                                          settingsDialog->twHosts->item( i, 1 )->text().toInt() );
             }
-            else if( settingsDialog->getTwHosts()->item( i, 2 )->text().compare( "udp" ) == 0 )
+            else if( settingsDialog->twHosts->item( i, 2 )->text().compare( "udp" ) == 0 )
             {
                 QUdpSocket* udpSocket = new QUdpSocket();
                 socketList.append( udpSocket );
-                connect( udpSocket, SIGNAL(connected()), this, SLOT(isConnected()) );
-                connect( udpSocket, SIGNAL(disconnected()), this, SLOT(isDisconnected()) );
+                connect( udpSocket, SIGNAL(connected()), this, SLOT(updateState()) );
+                connect( udpSocket, SIGNAL(disconnected()), this, SLOT(updateState()) );
                 connect( udpSocket, SIGNAL(readyRead()), this, SLOT(doClientReceive()) );
-                udpSocket->connectToHost( settingsDialog->getTwHosts()->item( i, 0 )->text(),
-                                          settingsDialog->getTwHosts()->item( i, 1 )->text().toInt() );
+                udpSocket->connectToHost( settingsDialog->twHosts->item( i, 0 )->text(),
+                                          settingsDialog->twHosts->item( i, 1 )->text().toInt() );
             }
-            else if( settingsDialog->getTwHosts()->item( i, 2 )->text().compare( "ssl" ) == 0 )
+            else if( settingsDialog->twHosts->item( i, 2 )->text().compare( "ssl" ) == 0 )
             {
                 QSslSocket* sslSocket = new QSslSocket();
                 socketList.append( sslSocket );
-                connect( sslSocket, SIGNAL(connected()), this, SLOT(isConnected()) );
-                connect( sslSocket, SIGNAL(disconnected()), this, SLOT(isDisconnected()) );
+                connect( sslSocket, SIGNAL(connected()), this, SLOT(updateState()) );
+                connect( sslSocket, SIGNAL(disconnected()), this, SLOT(updateState()) );
                 connect( sslSocket, SIGNAL(readyRead()), this, SLOT(doClientReceive()) );
-                sslSocket->connectToHostEncrypted( settingsDialog->getTwHosts()->item( i, 0 )->text(),
-                                          settingsDialog->getTwHosts()->item( i, 1 )->text().toInt() );
+                sslSocket->connectToHostEncrypted( settingsDialog->twHosts->item( i, 0 )->text(),
+                                          settingsDialog->twHosts->item( i, 1 )->text().toInt() );
             }
         }
     }
@@ -210,13 +214,12 @@ void qtlogwatcher::disconnectFromServer( )
 }
 
 
-void qtlogwatcher::isConnected( )
+void qtlogwatcher::updateState( )
 {
     QString message = "";
-    statusBar->setStyleSheet( "QLabel { color : green; }" );
     for( int i = 0; i < socketList.size(); i++ )
     {
-        if( socketList.at(i)->isValid() )
+        if( socketList.at(i)->state() == QAbstractSocket::ConnectedState )
         {
             message += socketList.at(i)->peerName() + ":up; ";
         }
@@ -225,25 +228,16 @@ void qtlogwatcher::isConnected( )
             message += socketList.at(i)->peerName() + ":down; ";
         }
     }
-    statusBar->showMessage( message );
-}
-
-void qtlogwatcher::isDisconnected( )
-{
-    QString message = "";
-    statusBar->setStyleSheet( "QLabel { color : red; }" );
-    for( int i = 0; i < socketList.size(); i++ )
+    if( message == "" )
     {
-        if( socketList.at(i)->isValid() )
-        {
-            message += socketList.at(i)->peerName() + ":up; ";
-        }
-        else
-        {
-            message += socketList.at(i)->peerName() + ":down; ";
-        }
+        statusBar->setStyleSheet( "QLabel { color : red; }" );
+        message = "Not connected";
     }
-    statusBar->showMessage( message );
+    else
+    {
+        statusBar->setStyleSheet( "QLabel { color : green; }" );
+    }
+    statusLabel->setText( message );
 }
 
 
@@ -291,7 +285,7 @@ void qtlogwatcher::doClientReceive( )
                 {
                     if( i > 0 )
                     {
-                        Sleeper::sleep( settingsDialog->spinTime->value() );
+                        Sleeper::sleep( settingsDialog->spinWait->value() );
                     }
                     if( type.toInt() < 4 )
                     {

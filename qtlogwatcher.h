@@ -64,6 +64,7 @@ public:
 private:
     Ui::qtlogwatcher *ui;
     QStatusBar *statusBar;
+    QLabel *statusLabel;
     QSystemTrayIcon *systrayIcon;
 
     QList<QAbstractSocket*> socketList;
@@ -86,7 +87,6 @@ private:
 
     void createActions();
     void createMenuBar();
-    void createSockets();
     void createStatusBar();
     void createTrayIcon();
     void initTableWidget();
@@ -100,8 +100,7 @@ private slots:
     void connectToServer();
     void disconnectFromServer();
 
-    void isConnected();
-    void isDisconnected();
+    void updateState();
 
     void doClientReceive();
     void doClientSend();
