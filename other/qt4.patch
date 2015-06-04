@@ -1,12 +1,12 @@
 diff -u QtLogwatcher/qtlogwatcher.cpp qtlogwatcher/qtlogwatcher.cpp
 --- QtLogwatcher/qtlogwatcher.cpp	2015-06-03 22:42:36.741971331 +0200
 +++ qtlogwatcher/qtlogwatcher.cpp	2015-06-03 22:56:20.891950992 +0200
-@@ -291,7 +291,7 @@
+@@ -285,7 +285,7 @@
                  {
                      if( i > 0 )
                      {
--                        QThread::sleep( settingsDialog->spinTime->value() );
-+                        Sleeper::sleep( settingsDialog->spinTime->value() );
+-                        QThread::sleep( settingsDialog->spinWait->value() );
++                        Sleeper::sleep( settingsDialog->spinWait->value() );
                      }
                      if( type.toInt() < 4 )
                      {
