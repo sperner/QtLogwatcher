@@ -180,7 +180,6 @@ void qtlogwatcher::connectToServer( )
                 connect( tcpSocket, SIGNAL(readyRead()), this, SLOT(doClientReceive()) );
                 tcpSocket->connectToHost( settingsDialog->twHosts->item( i, 0 )->text(),
                                           settingsDialog->twHosts->item( i, 1 )->text().toInt() );
-                tcpSocket->setPeerName( settingsDialog->twHosts->item( i, 0 )->text() );
             }
             else if( settingsDialog->twHosts->item( i, 2 )->text().compare( "udp" ) == 0 )
             {
@@ -191,7 +190,6 @@ void qtlogwatcher::connectToServer( )
                 connect( udpSocket, SIGNAL(readyRead()), this, SLOT(doClientReceive()) );
                 udpSocket->connectToHost( settingsDialog->twHosts->item( i, 0 )->text(),
                                           settingsDialog->twHosts->item( i, 1 )->text().toInt() );
-                udpSocket->setPeerName( settingsDialog->twHosts->item( i, 0 )->text() );
             }
             else if( settingsDialog->twHosts->item( i, 2 )->text().compare( "ssl" ) == 0 )
             {
@@ -202,7 +200,6 @@ void qtlogwatcher::connectToServer( )
                 connect( sslSocket, SIGNAL(readyRead()), this, SLOT(doClientReceive()) );
                 sslSocket->connectToHostEncrypted( settingsDialog->twHosts->item( i, 0 )->text(),
                                           settingsDialog->twHosts->item( i, 1 )->text().toInt() );
-                sslSocket->setPeerName( settingsDialog->twHosts->item( i, 0 )->text() );
             }
         }
     }
