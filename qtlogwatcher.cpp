@@ -246,22 +246,22 @@ void qtlogwatcher::doClientReceive( )
     QString type, host, file, message;
     QTableWidgetItem *item;
 
-    for( int i = 0; i < socketList.size(); i++ )
+    for( int x = 0; x < socketList.size(); x++ )
     {
-        QString stream( socketList.at(i)->readAll( ) );
-        QStringList streamList = stream.split("|!|");
+        QString stream( socketList.at(x)->readAll( ) );
+        QStringList msgList = stream.split("|!|");
 
-        for( int i = 0; i < streamList.size(); i++ )
+        for( int y = 0; y < msgList.size(); y++ )
         {
-            QStringList packetList = streamList[i].split("|:|");
+            QStringList wordList = msgList[y].split("|:|");
 
-            for( int i = 0; i < packetList.size()-2; i = i + 3 )
+            for( int z = 0; z < wordList.size()-2; z = z + 3 )
             {
-                type = packetList.at( i );
-                host = socketList.at(i)->peerAddress().toString() + ":"
-                     + QString::number( socketList.at(i)->peerPort() );
-                file = packetList.at( i+1 );
-                message = packetList.at( i+2 );
+                type = wordList.at( z );
+                host = socketList.at(x)->peerAddress().toString() + ":"
+                     + QString::number( socketList.at(x)->peerPort() );
+                file = wordList.at( z+1 );
+                message = wordList.at( z+2 );
 
                 if( settingsDialog->cmbLogLevel->currentIndex() >= type.toInt() )
                 {
@@ -283,7 +283,7 @@ void qtlogwatcher::doClientReceive( )
 
                 if( settingsDialog->chkNotifier->isChecked() && settingsDialog->cmbNotifier->currentIndex() >= type.toInt() )
                 {
-                    if( i > 0 )
+                    if( z > 0 )
                     {
                         QThread::sleep( settingsDialog->spinWait->value() );
                     }
