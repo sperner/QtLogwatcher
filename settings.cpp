@@ -45,11 +45,6 @@ settings::~settings( )
     delete this;
 }
 
-QTableWidget *settings::getTwHosts()
-{
-    return twHosts;
-}
-
 
 void settings::load( )
 {
@@ -61,9 +56,12 @@ void settings::load( )
     cmbNotifier->setCurrentIndex( cmbNotifier->findText(configuration->value("Notifier").toString(),Qt::MatchCaseSensitive) );
     chkNotifier->setChecked( configuration->value("Enabled").toBool() );
     chkScroll->setChecked( configuration->value("AutoScroll").toBool() );
+    chkHidden->setChecked( configuration->value("AutoHide").toBool() );
+    chkConnect->setChecked( configuration->value("AutoConnect").toBool() );
     radTray->setChecked( configuration->value("Tray").toBool() );
     radSystem->setChecked( configuration->value("System").toBool() );
     spinTime->setValue( configuration->value("Time").toInt() );
+    spinWait->setValue( configuration->value("Wait").toInt() );
     configuration->endGroup( );
 
     configuration->beginGroup( "Hosts" );
@@ -91,9 +89,12 @@ void settings::save( )
     configuration->setValue( "Notifier", cmbNotifier->currentText() );
     configuration->setValue( "Enabled", chkNotifier->isChecked() );
     configuration->setValue( "AutoScroll", chkScroll->isChecked() );
+    configuration->setValue( "AutoHide", chkHidden->isChecked() );
+    configuration->setValue( "AutoConnect", chkConnect->isChecked() );
     configuration->setValue( "Tray", radTray->isChecked() );
     configuration->setValue( "System", radSystem->isChecked() );
     configuration->setValue( "Time", spinTime->value() );
+    configuration->setValue( "Wait", spinWait->value() );
     configuration->endGroup( );
 
     configuration->beginGroup( "Hosts" );

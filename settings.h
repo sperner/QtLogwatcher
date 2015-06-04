@@ -40,7 +40,6 @@ class settings : public QDialog, public Ui::settings
 public:
     settings();
     ~settings();
-    QTableWidget* getTwHosts();
 
 
 private:
