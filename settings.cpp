@@ -72,7 +72,14 @@ void settings::load( )
         {
             hostport = configuration->value( key ).toString();
             hplist = hostport.split(":");
-            insert( hplist[0], hplist[1].toInt(), hplist[2], hplist[3].toInt() );
+            if( hplist.size() == 4 )
+            {
+                insert( hplist.at(0), hplist.at(1).toInt(), hplist.at(2), hplist.at(3).toInt() );
+            }
+            else
+            {
+                qDebug() << "Error in Hostlist" << endl;
+            }
         }
     }
     configuration->endGroup( );
