@@ -24,7 +24,14 @@ int main( int argc, char *argv[] )
 {
     QApplication application( argc, argv );
     qtlogwatcher widget;
-    widget.show( );
+    if( widget.getStartHidden() )
+    {
+        widget.hide( );
+    }
+    else
+    {
+        widget.show( );
+    }
     
     return application.exec( );
 }

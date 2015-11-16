@@ -37,6 +37,7 @@ settings::settings( )
     twHosts->setColumnCount( 4 );
 
     configuration = new QSettings( SETTINGS_FILE, QSettings::NativeFormat );
+    configfileinfo = new QFileInfo( SETTINGS_FILE );
     load( );
 }
 
@@ -91,32 +92,50 @@ void settings::save( )
     int i;
     QString host, value;
 
-    configuration->beginGroup( "QtLogwatcher" );
-    configuration->setValue( "Loglevel", cmbLogLevel->currentText() );
-    configuration->setValue( "Notifier", cmbNotifier->currentText() );
-    configuration->setValue( "Enabled", chkNotifier->isChecked() );
-    configuration->setValue( "AutoScroll", chkScroll->isChecked() );
-    configuration->setValue( "AutoHide", chkHidden->isChecked() );
-    configuration->setValue( "AutoConnect", chkConnect->isChecked() );
-    configuration->setValue( "Tray", radTray->isChecked() );
-    configuration->setValue( "System", radSystem->isChecked() );
-    configuration->setValue( "Time", spinTime->value() );
-    configuration->setValue( "Wait", spinWait->value() );
-    configuration->endGroup( );
-
-    configuration->beginGroup( "Hosts" );
-    for( i = 0; i < twHosts->rowCount(); i++ )
+    if( configuration->isWritable() && configfileinfo->isWritable() )
     {
-        host = "Host" + QString::number(i);
-        value = twHosts->item( i, 0 )->text()
-                + ":" + twHosts->item( i, 1 )->text()
-                + ":" + twHosts->item( i, 2 )->text()
-                + ":" + twHosts->item( i, 3 )->text();
-        configuration->setValue( host, value );
-    }
-    configuration->endGroup( );
+        configuration->beginGroup( "QtLogwatcher" );
+        configuration->setValue( "Loglevel", cmbLogLevel->currentText() );
+        configuration->setValue( "Notifier", cmbNotifier->currentText() );
+        configuration->setValue( "Enabled", chkNotifier->isChecked() );
+        configuration->setValue( "AutoScroll", chkScroll->isChecked() );
+        configuration->setValue( "AutoHide", chkHidden->isChecked() );
+        configuration->setValue( "AutoConnect", chkConnect->isChecked() );
+        configuration->setValue( "Tray", radTray->isChecked() );
+        configuration->setValue( "System", radSystem->isChecked() );
+        configuration->setValue( "Time", spinTime->value() );
+        configuration->setValue( "Wait", spinWait->value() );
+        configuration->endGroup( );
 
-    configuration->sync( );
+        configuration->beginGroup( "Hosts" );
+        for( i = 0; i < twHosts->rowCount(); i++ )
+        {
+            host = "Host" + QString::number(i);
+            value = twHosts->item( i, 0 )->text()
+                    + ":" + twHosts->item( i, 1 )->text()
+                    + ":" + twHosts->item( i, 2 )->text()
+                    + ":" + twHosts->item( i, 3 )->text();
+            configuration->setValue( host, value );
+        }
+        configuration->endGroup( );
+
+        configuration->sync( );
+        switch( configuration->status() )
+        {
+            case QSettings::AccessError:
+                QMessageBox::critical( this, "Access Error", "Error accessing file\n" + configuration->fileName() );
+                break;
+            case QSettings::FormatError:
+                QMessageBox::critical( this, "Format Error", "Format error in file\n" + configuration->fileName() );
+                break;
+            case QSettings::NoError:
+                break;
+        }
+    }
+    else
+    {
+        QMessageBox::critical( this, "No write access", configuration->fileName() + "\nis not writeable" );
+    }
 }
 
 void settings::close( )

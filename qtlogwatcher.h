@@ -50,6 +50,7 @@ class qtlogwatcher : public QMainWindow
 
 public:
     explicit qtlogwatcher( QWidget *parent = 0 );
+    bool getStartHidden( );
     ~qtlogwatcher( );
 
 

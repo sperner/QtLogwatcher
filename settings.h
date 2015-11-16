@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SETTINGS_FILE "/etc/qtlogwatcher.conf"
 
 #include <QDebug>
+#include <QFileInfo>
 #include <QMessageBox>
 #include <QSettings>
 #include <QTableWidget>
@@ -44,6 +45,7 @@ public:
 
 private:
     QSettings *configuration;
+    QFileInfo *configfileinfo;
 
     void load();
     void insert(QString address, qint16 port, QString proto, qint16 status);

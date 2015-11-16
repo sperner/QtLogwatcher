@@ -37,11 +37,6 @@ qtlogwatcher::qtlogwatcher(QWidget *parent) : QMainWindow(parent), ui(new Ui::qt
     createTrayIcon( );
     initTableWidget( );
 
-    if( settingsDialog->chkHidden->isChecked() )
-    {
-        toggleVisibility( );
-    }
-
     if( settingsDialog->chkConnect->isChecked() )
     {
         connectToServer( );
@@ -120,7 +115,14 @@ void qtlogwatcher::createTrayIcon( )
 
     systrayIcon = new QSystemTrayIcon( this );
     systrayIcon->setContextMenu( systrayMenu );
-    systrayIcon->setIcon( QIcon(ICON_ACTIVE) );
+    if( settingsDialog->chkHidden->isChecked() )
+    {
+        systrayIcon->setIcon( QIcon(ICON_INACTIVE) );
+    }
+    else
+    {
+        systrayIcon->setIcon( QIcon(ICON_ACTIVE) );
+    }
     systrayIcon->show( );
     connect( systrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)) , this, SLOT(toggleVisibility()) );
 }
@@ -377,6 +379,12 @@ void qtlogwatcher::exportTable( )
         }
         exportFile.close( );
     }
+}
+
+
+bool qtlogwatcher::getStartHidden( )
+{
+    return settingsDialog->chkHidden->isChecked();
 }
 
 
