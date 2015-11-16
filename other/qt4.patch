@@ -40,3 +40,15 @@ diff -u QtLogwatcher/settings.cpp qtlogwatcher/settings.cpp
      twHosts->setColumnCount( 4 );
  
      configuration = new QSettings( SETTINGS_FILE, QSettings::NativeFormat );
+diff -u QtLogwatcher/qtlogwatcher.pro qtlogwatcher/qtlogwatcher.pro
+--- QtLogwatcher/QtLogwatcher.pro	2015-11-16 17:30:28.704260999 +0100
++++ qtlogwatcher/QtLogwatcher.pro	2015-11-16 17:30:39.457594425 +0100
+@@ -22,7 +22,7 @@
+ 
+ QT       += core gui network
+ 
+-greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
++greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+ 
+ TARGET = QtLogwatcher
+ TEMPLATE = app
